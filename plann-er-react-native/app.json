@@ -1,0 +1,36 @@
+{
+  "expo": {
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#09090B",
+        "foregroundImage": "./assets/images/adaptive-icon.png"
+      },
+      "package": "dev.pedrohb.plann-er-react-native"
+    },
+    "experiments": {
+      "typedRoutes": true
+    },
+    "icon": "./assets/images/icon.png",
+    "ios": {
+      "bundleIdentifier": "dev.pedrohb.plann-er-react-native",
+      "supportsTablet": true
+    },
+    "name": "plann-er-react-native",
+    "orientation": "portrait",
+    "plugins": ["expo-router", "expo-font"],
+    "scheme": "plann-er-react-native",
+    "slug": "plann-er-react-native",
+    "splash": {
+      "backgroundColor": "#09090B",
+      "image": "./assets/images/splash.png",
+      "resizeMode": "contain"
+    },
+    "userInterfaceStyle": "automatic",
+    "version": "1.0.0",
+    "web": {
+      "bundler": "metro",
+      "favicon": "./assets/images/favicon.png",
+      "output": "static"
+    }
+  }
+}
