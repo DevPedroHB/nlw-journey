@@ -10,7 +10,7 @@ import {
 
 type Variants = "primary" | "secondary";
 
-interface ButtonProps extends TouchableOpacityProps {
+interface IButton extends TouchableOpacityProps {
   variant?: Variants;
   isLoading?: boolean;
 }
@@ -23,7 +23,7 @@ function Button({
   isLoading,
   className,
   ...rest
-}: ButtonProps) {
+}: IButton) {
   return (
     <TouchableOpacity
       className={clsx(

@@ -5,21 +5,21 @@
         "backgroundColor": "#09090B",
         "foregroundImage": "./assets/images/adaptive-icon.png"
       },
-      "package": "dev.pedrohb.plann-er-react-native"
+      "package": "dev.pedrohb.planner-react-native"
     },
     "experiments": {
       "typedRoutes": true
     },
     "icon": "./assets/images/icon.png",
     "ios": {
-      "bundleIdentifier": "dev.pedrohb.plann-er-react-native",
+      "bundleIdentifier": "dev.pedrohb.planner-react-native",
       "supportsTablet": true
     },
-    "name": "plann-er-react-native",
+    "name": "planner-react-native",
     "orientation": "portrait",
     "plugins": ["expo-router", "expo-font"],
-    "scheme": "plann-er-react-native",
-    "slug": "plann-er-react-native",
+    "scheme": "planner-react-native",
+    "slug": "planner-react-native",
     "splash": {
       "backgroundColor": "#09090B",
       "image": "./assets/images/splash.png",
