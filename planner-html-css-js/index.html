@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles.css" />
+    <title>plann.er</title>
+  </head>
+  <body>
+    <form onsubmit="saveActivity(event)">
+      <div>
+        <input
+          type="text"
+          name="activity"
+          placeholder="Qual a atividade?"
+          required
+        />
+      </div>
+      <div>
+        <select name="day" required>
+          <option value="2024-03-01">01 de março</option>
+        </select>
+      </div>
+      <div>
+        <select name="time" required>
+          <option value="10:30">10:30</option>
+        </select>
+      </div>
+      <button type="submit">Salvar atividade</button>
+    </form>
+    <main>
+      <h1>Atividades</h1>
+      <section></section>
+    </main>
+  </body>
+  <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dayjs@1/locale/pt-br.js"></script>
+  <script src="main.js"></script>
+</html>
