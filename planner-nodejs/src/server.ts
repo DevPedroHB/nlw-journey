@@ -10,10 +10,15 @@ import { errorHandler } from "./error-handler";
 import { confirmParticipant } from "./routes/confirm-participant";
 import { confirmTrip } from "./routes/confirm-trip";
 import { createActivity } from "./routes/create-activity";
+import { createInvite } from "./routes/create-invite";
 import { createLink } from "./routes/create-link";
 import { createTrip } from "./routes/create-trip";
 import { fetchActivities } from "./routes/fetch-activities";
 import { fetchLinks } from "./routes/fetch-links";
+import { fetchParticipants } from "./routes/fetch-participants";
+import { getParticipant } from "./routes/get-participant";
+import { getTripDetails } from "./routes/get-trip-details";
+import { updateTrip } from "./routes/update-trip";
 
 const app = fastify();
 
@@ -33,6 +38,11 @@ app.register(createActivity);
 app.register(fetchActivities);
 app.register(createLink);
 app.register(fetchLinks);
+app.register(fetchParticipants);
+app.register(createInvite);
+app.register(updateTrip);
+app.register(getTripDetails);
+app.register(getParticipant);
 
 app
   .listen({
