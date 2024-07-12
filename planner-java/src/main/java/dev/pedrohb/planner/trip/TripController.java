@@ -16,6 +16,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import dev.pedrohb.planner.activity.ActivityData;
+import dev.pedrohb.planner.activity.ActivityRequestPayload;
+import dev.pedrohb.planner.activity.ActivityResponse;
+import dev.pedrohb.planner.activity.ActivityService;
+import dev.pedrohb.planner.link.LinkData;
+import dev.pedrohb.planner.link.LinkRequestPayload;
+import dev.pedrohb.planner.link.LinkResponse;
+import dev.pedrohb.planner.link.LinkService;
 import dev.pedrohb.planner.participant.ParticipantCreateResponse;
 import dev.pedrohb.planner.participant.ParticipantData;
 import dev.pedrohb.planner.participant.ParticipantRequestPayload;
@@ -27,19 +35,24 @@ public class TripController {
 
   @Autowired
   private ParticipantService participantService;
-
   @Autowired
   private TripRepository repository;
+  @Autowired
+  private ActivityService activityService;
+  @Autowired
+  private LinkService linkService;
+
+  // Trip
 
   @PostMapping
   public ResponseEntity<TripCreateResponse> createTrip(@RequestBody TripRequestPayload payload) {
     Trip newTrip = new Trip(payload);
 
     this.repository.save(newTrip);
+
     this.participantService.registerParticipantsToEvent(payload.emails_to_invite(), newTrip);
 
     return ResponseEntity.ok(new TripCreateResponse(newTrip.getId()));
-
   }
 
   @GetMapping("/{id}")
@@ -69,7 +82,7 @@ public class TripController {
   }
 
   @GetMapping("/{id}/confirm")
-  public ResponseEntity<Trip> confirmTrip(@PathVariable UUID id) {
+  public ResponseEntity<Trip> updateTrip(@PathVariable UUID id) {
     Optional<Trip> trip = this.repository.findById(id);
 
     if (trip.isPresent()) {
@@ -85,6 +98,36 @@ public class TripController {
     }
 
     return ResponseEntity.notFound().build();
+  }
+
+  @PostMapping("/{id}/activities")
+  public ResponseEntity<ActivityResponse> registerActivity(@PathVariable UUID id,
+      @RequestBody ActivityRequestPayload payload) {
+    Optional<Trip> trip = this.repository.findById(id);
+
+    if (trip.isPresent()) {
+      Trip rawTrip = trip.get();
+
+      ActivityResponse activityResponse = this.activityService.registerActivity(payload, rawTrip);
+
+      return ResponseEntity.ok(activityResponse);
+    }
+
+    return ResponseEntity.notFound().build();
+  }
+
+  @GetMapping("/{id}/activities")
+  public ResponseEntity<List<ActivityData>> getAllActivities(@PathVariable UUID id) {
+    List<ActivityData> activityDataList = this.activityService.getAllActivitiesFromId(id);
+
+    return ResponseEntity.ok(activityDataList);
+  }
+
+  @GetMapping("/{id}/participants")
+  public ResponseEntity<List<ParticipantData>> getAllParticipants(@PathVariable UUID id) {
+    List<ParticipantData> participantList = this.participantService.getAllParticipantsFromEvent(id);
+
+    return ResponseEntity.ok(participantList);
   }
 
   @PostMapping("/{id}/invite")
@@ -108,10 +151,25 @@ public class TripController {
     return ResponseEntity.notFound().build();
   }
 
-  @GetMapping("/{id}/participants")
-  public ResponseEntity<List<ParticipantData>> getAllParticipants(@PathVariable UUID id) {
-    List<ParticipantData> participantList = this.participantService.getAllParticipantsFromEvent(id);
+  @PostMapping("/{id}/links")
+  public ResponseEntity<LinkResponse> registerLink(@PathVariable UUID id, @RequestBody LinkRequestPayload payload) {
+    Optional<Trip> trip = this.repository.findById(id);
 
-    return ResponseEntity.ok(participantList);
+    if (trip.isPresent()) {
+      Trip rawTrip = trip.get();
+
+      LinkResponse linkResponse = this.linkService.registerLink(payload, rawTrip);
+
+      return ResponseEntity.ok(linkResponse);
+    }
+
+    return ResponseEntity.notFound().build();
+  }
+
+  @GetMapping("/{id}/links")
+  public ResponseEntity<List<LinkData>> getAllLinks(@PathVariable UUID id) {
+    List<LinkData> linkDataList = this.linkService.getAllLinksFromTrip(id);
+
+    return ResponseEntity.ok(linkDataList);
   }
 }
