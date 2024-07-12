@@ -45,8 +45,8 @@
   "name": "plann-er-react-native",
   "private": true,
   "scripts": {
-    "android": "expo start --android",
-    "ios": "expo start --ios",
+    "android": "expo run:android",
+    "ios": "expo run:ios",
     "start": "expo start",
     "test": "jest --watchAll",
     "web": "expo start --web"

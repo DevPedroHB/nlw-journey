@@ -61,4 +61,8 @@ async function update({
   }
 }
 
-export const tripServer = { getById, create, update };
+export const tripServer = {
+  getById,
+  create,
+  update,
+};
