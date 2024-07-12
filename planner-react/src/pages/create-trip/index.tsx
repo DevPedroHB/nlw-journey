@@ -1,5 +1,8 @@
 import { useState, type FormEvent } from "react";
+import type { DateRange } from "react-day-picker";
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
+import { createTrip } from "../../data/trip/create-trip";
 import { ConfirmTripModal } from "./components/confirm-trip-modal";
 import { DestinationAndDateStep } from "./components/destination-and-date-step";
 import { InviteGuestsModal } from "./components/invite-guests-modal";
@@ -10,7 +13,16 @@ export function CreateTripPage() {
   const [isGuestsInputOpen, setIsGuestsInputOpen] = useState(false);
   const [isGuestsModalOpen, setIsGuestsModalOpen] = useState(false);
   const [isConfirmTripModalOpen, setIsConfirmTripModalOpen] = useState(false);
+  const [destination, setDestination] = useState("");
+  const [ownerName, setOwnerName] = useState("");
+  const [ownerEmail, setOwnerEmail] = useState("");
+  const [eventStartAndEndDates, setEventStartAndEndDates] = useState<
+    DateRange | undefined
+  >();
   const [emailsToInvite, setEmailsToInvite] = useState<string[]>([]);
+  const { mutateAsync, error } = createTrip();
+
+  if (error) toast.error(error.message);
 
   function handleChangeGuestsInput() {
     setIsGuestsInputOpen((prev) => !prev);
@@ -42,10 +54,18 @@ export function CreateTripPage() {
     );
   }
 
-  function createTrip(event: FormEvent<HTMLFormElement>) {
+  async function createNewTrip(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
-    navigate("/trips/an-example-id");
+    const data = await mutateAsync({
+      destination,
+      ownerName,
+      ownerEmail,
+      eventStartAndEndDates,
+      emailsToInvite,
+    });
+
+    navigate(`/trips/${data.tripId}`);
   }
 
   return (
@@ -61,6 +81,9 @@ export function CreateTripPage() {
           <DestinationAndDateStep
             isGuestsInputOpen={isGuestsInputOpen}
             handleChangeGuestsInput={handleChangeGuestsInput}
+            setDestination={setDestination}
+            eventStartAndEndDates={eventStartAndEndDates}
+            setEventStartAndEndDates={setEventStartAndEndDates}
           />
           {isGuestsInputOpen && (
             <InviteGuestsStep
@@ -94,7 +117,9 @@ export function CreateTripPage() {
       {isConfirmTripModalOpen && (
         <ConfirmTripModal
           handleChangeConfirmTripModal={handleChangeConfirmTripModal}
-          createTrip={createTrip}
+          createTrip={createNewTrip}
+          setOwnerName={setOwnerName}
+          setOwnerEmail={setOwnerEmail}
         />
       )}
     </div>
